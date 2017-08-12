@@ -1,3 +1,4 @@
+'use strict'
 document.addEventListener('DOMContentLoaded', function() {
   // reducer - specifies how next state is calculated
   const counter = (state = 0, action) => {
