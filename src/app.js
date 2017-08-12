@@ -16,9 +16,46 @@ document.addEventListener('DOMContentLoaded', function() {
       1. holds applications state object
       2. dispatch actions
   */
-  const { createStore } = Redux;
+  // const { createStore } = Redux;
+  
+
+  // custom Redux store
+const createStore = reducer => {
+  // current state
+  let state;
+  let listeners = [];
+
+  // returning state
+  const getState = () => state;
+
+  const dispatch = (action) => {
+    state = reducer(state, action);
+    // notifying every reducer
+    listeners.forEach(listener => listener())
+  }
+
+  const subscribe = (listener) => {
+    listeners.push(listener);
+    // unsubcribe to listener
+    return () => {
+      listeners = listeners.filter(l => l !== listener)
+    }
+
+    // invoking dispatch, give intiial value
+    dispatch({});
+  }
+
+  return {getState, dispatch, subscribe}
+}
+
+
+
+
+
+
+
   // specifying reducer to tell how state is updated based on actoin
-  const store = createStore(counter); // counter will manage state updates
+  const store = createStore(counter); // counter passed to store object will manage state updates
 
   const render = () => {
     document.body.innerText = store.getState();
